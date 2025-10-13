@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados Yulo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Resultados da pesquisa</h1>
+    <ul id="results"></ul>
+
+    <script>
+        // Lista de "sites" ou links que o buscador conhece
+        const sites = [
+            {name: "Exemplo Site 1", url: "https://example.com"},
+            {name: "Tutorial HTML", url: "https://www.w3schools.com/html/"},
+            {name: "Mozilla Developer Network", url: "https://developer.mozilla.org/"},
+            {name: "YouTube", url: "https://youtube.com"},
+            {name: "GitHub", url: "https://github.com"}
+        ];
+
+        // Pega a query da URL
+        const params = new URLSearchParams(window.location.search);
+        const query = params.get('q')?.toLowerCase();
+
+        const resultsContainer = document.getElementById('results');
+
+        if(query){
+            const results = sites.filter(site => site.name.toLowerCase().includes(query));
+            
+            if(results.length > 0){
+                results.forEach(site => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = site.url;
+                    a.textContent = site.name;
+                    a.target = "_blank";
+                    li.appendChild(a);
+                    resultsContainer.appendChild(li);
+                });
+            } else {
+                resultsContainer.innerHTML = `<li>Nenhum resultado encontrado para "<strong>${query}</strong>"</li>`;
+            }
+        } else {
+            resultsContainer.innerHTML = `<li>Nenhuma pesquisa realizada.</li>`;
+        }
+    </script>
+</body>
+</html>
