@@ -8,137 +8,107 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding-top: 90px; /* espaço para topbar */
             background: #f5f5f5;
             text-align: center;
         }
 
-        /* Topbar Yulo estilizada */
+        /* Topbar Yulo */
+        /* Reset box-sizing global */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Topbar Yulo */
         .topbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 90px;
+            height: 60px;
             background-color: #ffcc00;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
-            padding: 0 30px;
+            padding: 0 20px; /* cuidado com padding grande */
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             z-index: 1000;
-            transition: background 0.3s;
         }
 
-        .topbar:hover {
-            background-color: #ffdb4d;
-        }
 
-        .topbar .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #000;
-            letter-spacing: 1px;
-        }
-
-        .topbar .search-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            margin: 0 20px;
-        }
-
-        .topbar input[type="text"] {
-            width: 400px;
-            padding: 12px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 50px 0 0 50px;
-            outline: none;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            transition: width 0.3s, box-shadow 0.3s;
-        }
-
-        .topbar input[type="text"]:focus {
-            width: 500px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .topbar button {
-            padding: 12px 25px;
-            font-size: 16px;
-            border: none;
-            border-radius: 0 50px 50px 0;
-            background-color: #000;
-            color: #ffcc00;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .topbar button:hover {
-            background-color: #333;
-            color: #fff;
-        }
-
-        .topbar .nav {
-            display: flex;
-            align-items: center;
-        }
-
-        .topbar .nav a {
+        .topbar a, .topbar .icon {
             margin-left: 20px;
             text-decoration: none;
             color: #000;
             font-weight: bold;
+            font-size: 16px;
             transition: color 0.2s;
         }
 
-        .topbar .nav a:hover {
+        .topbar a:hover, .topbar .icon:hover {
             color: #333;
         }
 
-        .topbar .nav .icon {
-            margin-left: 20px;
-            font-size: 20px;
+        /* Logo */
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            color: #000000;
+            margin-top: 120px; /* espaçamento do topo para topbar */
+        }
+
+        /* Barra de pesquisa */
+        .search-container {
+            margin-top: 30px;
+        }
+
+        .search-container input[type="text"] {
+            width: 500px;
+            padding: 15px 20px;
+            font-size: 18px;
+            border: 2px solid #333;
+            border-right: 0; /* remove a borda direita do input */
+            border-radius: 50px 0 0 50px; /* canto arredondado só do lado esquerdo */
+            outline: none;
+        }
+
+        .search-container button {
+            padding: 15px 25px;
+            font-size: 18px;
+            border: 2px solid #333;
+            border-left: 0; /* remove a borda esquerda do botão para colar no input */
+            border-radius: 0 50px 50px 0; /* canto arredondado só do lado direito */
+            background-color: #ffffff;
+            color: #333;
             cursor: pointer;
-            color: #000;
-            transition: color 0.2s;
+            font-weight: bold;
         }
 
-        .topbar .nav .icon:hover {
-            color: #333;
+
+        .search-container button:hover {
+            background-color: #ffffff;
+            color: #fff;
         }
 
-        /* Conteúdo fictício para teste */
-        .content {
-            margin-top: 50px;
-        }
     </style>
 </head>
 <body>
-    <!-- Topbar Yulo estilizada -->
+    <!-- Topbar -->
     <div class="topbar">
-        <div class="logo">Yulo</div>
-
-        <div class="search-container">
-            <form id="searchForm">
-                <input type="text" id="query" placeholder="Pesquise aqui...">
-                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
-            </form>
-        </div>
-
-        <div class="nav">
-            <a href="#">Vídeos</a>
-            <a href="#">Imagens</a>
-            <i class="fa-solid fa-th icon"></i> <!-- ícone de apps -->
-            <i class="fa-solid fa-user-circle icon"></i> <!-- avatar -->
-        </div>
+        <a href="#">Vídeos</a>
+        <a href="#">Imagens</a>
     </div>
 
-    <div class="content">
-        <h1>Bem-vindo ao Yulo!</h1>
-        <p>Experimente pesquisar algo acima...</p>
+    <!-- Logo -->
+    <div class="logo">Yulo</div>
+
+    <!-- Barra de pesquisa -->
+    <div class="search-container">
+        <form id="searchForm">
+            <input type="text" id="query" placeholder="Pesquise aqui...">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+        </form>
     </div>
 
     <script>
