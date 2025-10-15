@@ -132,57 +132,62 @@
       <button type="submit"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
     </form>
   </div>
-  
-<!-- Seu conteúdo da página -->
-<div id="navbar">
-  <button id="login-btn">Login</button>
-  <button id="logout-btn" style="display: none;">Sair</button>
-  <span id="user-info"></span>
-</div>
 
-<!-- Firebase -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  <script type="module">
+    // Importa funções do Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyA-PEvp2reLWNxI_HKPMS2vofxSNOvDzDE",
-    authDomain: "playvideos-e2d5d.firebaseapp.com",
-    databaseURL: "https://playvideos-e2d5d-default-rtdb.firebaseio.com",
-    projectId: "playvideos-e2d5d",
-    storageBucket: "playvideos-e2d5d.firebasestorage.app",
-    messagingSenderId: "220622211507",
-    appId: "1:220622211507:web:920bc3199ffacb5b7963c6",
-    measurementId: "G-EJCD4QDK6G"
-  };
+    // Configuração Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDUePbjwvKVJI92Tx9UNUxW89f-yjUmzkk",
+      authDomain: "yuloaccount.firebaseapp.com",
+      projectId: "yuloaccount",
+      storageBucket: "yuloaccount.appspot.com",
+      messagingSenderId: "779511361407",
+      appId: "1:779511361407:web:3a9c812cfe64845a73f44a",
+      measurementId: "G-LJJVP6TVB7"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    // Inicializa Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  // Detecta mudanças de login
-  onAuthStateChanged(auth, (user) => {
-    const loginBtn = document.getElementById("login-btn");
-    const logoutBtn = document.getElementById("logout-btn");
-    const userInfo = document.getElementById("user-info");
+    const authArea = document.getElementById('authArea');
 
-    if (user) {
-      // Usuário logado
-      loginBtn.style.display = "none";
-      logoutBtn.style.display = "inline-block";
-      userInfo.textContent = `👤 ${user.email}`;
-    } else {
-      // Usuário deslogado
-      loginBtn.style.display = "inline-block";
-      logoutBtn.style.display = "none";
-      userInfo.textContent = "";
-    }
-  });
+    // Verifica se o usuário está logado
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Usuário logado
+        authArea.innerHTML = `
+          <span class="user-info">Olá, ${user.email}</span>
+          <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        `;
 
-  // Botão sair
-  document.getElementById("logout-btn").addEventListener("click", async () => {
-    await signOut(auth);
-    alert("Você saiu da conta.");
-  });
-</script>
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+          await signOut(auth);
+          window.location.reload();
+        });
+      } else {
+        // Usuário deslogado
+        authArea.innerHTML = `
+          <button class="login-btn" id="loginBtn"><i class="fa-solid fa-user"></i> Login</button>
+        `;
+
+        // Redireciona pro login
+        document.getElementById('loginBtn').addEventListener('click', () => {
+          window.location.href = "login.html";
+        });
+      }
+    });
+
+    // Pesquisa
+    document.getElementById('searchForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const query = document.getElementById('query').value;
+      window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+    });
+  </script>
 </body>
 </html>
