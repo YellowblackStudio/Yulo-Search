@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Yulo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background-color: #ffcc00;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      width: 400px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .login-container h1 {
+      margin-bottom: 30px;
+      color: #000;
+      font-size: 32px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: #000;
+    }
+
+    .login-btn {
+      width: 100%;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 25px;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+
+    .login-btn:hover {
+      background-color: #333;
+    }
+
+    .register {
+      margin-top: 15px;
+      color: #333;
+    }
+
+    .register a {
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .register a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .success-message {
+      color: green;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1><i class="fa-solid fa-user"></i> Yulo Login</h1>
+
+    <div class="input-group">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" placeholder="Digite seu e-mail">
+    </div>
+
+    <div class="input-group">
+      <label for="password">Senha</label>
+      <input type="password" id="password" placeholder="Digite sua senha">
+    </div>
+
+    <button class="login-btn" id="loginBtn">Entrar</button>
+
+    <div class="register">
+      Ainda não tem conta? <a href="#" id="registerLink">Criar conta</a>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script type="module">
+    // Importa funções do Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    // Configuração Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDUePbjwvKVJI92Tx9UNUxW89f-yjUmzkk",
+      authDomain: "yuloaccount.firebaseapp.com",
+      projectId: "yuloaccount",
+      storageBucket: "yuloaccount.firebasestorage.app",
+      messagingSenderId: "779511361407",
+      appId: "1:779511361407:web:3a9c812cfe64845a73f44a",
+      measurementId: "G-LJJVP6TVB7"
+    };
+
+    // Inicializa Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const emailField = document.getElementById('email');
+    const passwordField = document.getElementById('password');
+    const loginBtn = document.getElementById('loginBtn');
+    const messageDiv = document.getElementById('message');
+    const registerLink = document.getElementById('registerLink');
+
+    // LOGIN
+    loginBtn.addEventListener('click', async () => {
+      const email = emailField.value.trim();
+      const password = passwordField.value.trim();
+
+      if (!email || !password) {
+        messageDiv.innerHTML = '<p class="error-message">Preencha todos os campos.</p>';
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        messageDiv.innerHTML = '<p class="success-message">Login bem-sucedido! Redirecionando...</p>';
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1500);
+      } catch (error) {
+        messageDiv.innerHTML = `<p class="error-message">Erro: ${error.message}</p>`;
+      }
+    });
+
+    // REGISTRO (cria conta)
+    registerLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const email = emailField.value.trim();
+      const password = passwordField.value.trim();
+
+      if (!email || !password) {
+        messageDiv.innerHTML = '<p class="error-message">Preencha e-mail e senha antes de criar conta.</p>';
+        return;
+      }
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        messageDiv.innerHTML = '<p class="success-message">Conta criada com sucesso! Agora você pode entrar.</p>';
+      } catch (error) {
+        messageDiv.innerHTML = `<p class="error-message">Erro: ${error.message}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
