@@ -13,7 +13,6 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
       background: #f5f5f5;
       text-align: center;
     }
@@ -47,8 +46,8 @@
       color: #333;
     }
 
-    /* Botão Login */
-    .login-btn {
+    /* Botões */
+    .login-btn, .logout-btn {
       background-color: #000;
       color: #fff;
       border: none;
@@ -60,15 +59,21 @@
       transition: background-color 0.2s;
     }
 
-    .login-btn:hover {
+    .login-btn:hover, .logout-btn:hover {
       background-color: #333;
+    }
+
+    .user-info {
+      font-weight: bold;
+      color: #000;
+      margin-right: 10px;
     }
 
     /* Logo */
     .logo {
       font-size: 48px;
       font-weight: bold;
-      color: #000000;
+      color: #000;
       margin-top: 120px;
     }
 
@@ -112,8 +117,8 @@
       <a href="#">Vídeos</a>
       <a href="#">Imagens</a>
     </div>
-    <div class="topbar-right">
-      <button class="login-btn" id="loginBtn"><i class="fa-solid fa-user"></i> Login</button>
+    <div class="topbar-right" id="authArea">
+      <!-- Aqui será injetado Login ou Logout -->
     </div>
   </div>
 
@@ -131,26 +136,50 @@
   <script type="module">
     // Importa funções do Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-    // Configuração do Firebase
+    // Configuração Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyDUePbjwvKVJI92Tx9UNUxW89f-yjUmzkk",
       authDomain: "yuloaccount.firebaseapp.com",
       projectId: "yuloaccount",
-      storageBucket: "yuloaccount.firebasestorage.app",
+      storageBucket: "yuloaccount.appspot.com",
       messagingSenderId: "779511361407",
       appId: "1:779511361407:web:3a9c812cfe64845a73f44a",
       measurementId: "G-LJJVP6TVB7"
     };
 
-    // Inicializa o Firebase
+    // Inicializa Firebase
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
 
-    // Evento de login
-    document.getElementById('loginBtn').addEventListener('click', () => {
-      window.location.href = "login.html";
+    const authArea = document.getElementById('authArea');
+
+    // Verifica se o usuário está logado
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Usuário logado
+        authArea.innerHTML = `
+          <span class="user-info">Olá, ${user.email}</span>
+          <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        `;
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+          await signOut(auth);
+          window.location.reload();
+        });
+      } else {
+        // Usuário deslogado
+        authArea.innerHTML = `
+          <button class="login-btn" id="loginBtn"><i class="fa-solid fa-user"></i> Login</button>
+        `;
+
+        // Redireciona pro login
+        document.getElementById('loginBtn').addEventListener('click', () => {
+          window.location.href = "login.html";
+        });
+      }
     });
 
     // Pesquisa
